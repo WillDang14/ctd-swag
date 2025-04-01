@@ -1,35 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+
+import ctdLogo from './assets/mono-blue-logo.svg';
+
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [testList, setTestList] = useState([1, 2, 3]);
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="coming-soon">
+        <h1>CTD Swag</h1>
+
+        <div style={{ height: 100, width: 100 }}>
+          <img src={ctdLogo} alt="Code The Dream Logo" />
+        </div>
+
+        <h2>Coming Soon ...</h2>
+
+        <ul>
+          {testList.map((item) => (
+            <li key={{ item }}>{item}</li>
+          ))}
+        </ul>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
