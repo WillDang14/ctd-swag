@@ -22,10 +22,14 @@ export default [
     },
     rules: {
       ...js.configs.recommended.rules,
+      ...react.configs.recommended.rules, // week 03
+      ...react.configs['jsx-runtime'].rules, // week 03
       ...reactHooks.configs.recommended.rules,
       // 'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
       'no-unused-vars': 'off',
       'react/jsx-key': 'off',
+      'react/jsx-no-target-blank': 'off', // week 03
+      'react/prop-types': 'off', //disables react/prop-types rule
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },

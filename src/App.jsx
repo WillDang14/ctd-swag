@@ -1,65 +1,67 @@
 import { useState } from 'react';
 
-import ctdLogo from './assets/mono-blue-logo.svg';
-
 import './App.css';
+
+import inventoryData from './assets/inventory.json';
+
+import Header from './Header';
+import ProductList from './ProductList';
+import ProductCard from './ProductCard';
+
+// import ctdLogo from './assets/mono-blue-logo.svg';
+
+// console.log(inventoryData); // this is a object
+
+/* ========================================================= */
+
+// const message = 'Coming Soon...'; //This is outside the function definition for App
+
+// let message = 'Coming Soon...'; //This is outside the function definition for App
+
+// setTimeout(() => {
+//   message = 'We can feel it...';
+
+//   console.log(`Updated message: ${message}`);
+// }, 3000);
+
+/* ========================================================= */
+// function App() {
+//   // const title = ' CTD Swag'; // This is inside the Component before the return
+
+//   return (
+//     <div className="coming-soon">
+//       <h1>{title}</h1>
+//       <div style={{ height: 100, width: 100 }}>
+//         <img src={ctdLogo} alt="Code The Dream Logo" />
+//       </div>
+//       <h2>{message}</h2>
+//     </div>
+//   );
+// }
 
 /* ========================================================= */
 function App() {
-  const [testList, setTestList] = useState([1, 2, 3]);
+  const [inventory, setInventory] = useState(inventoryData.inventory);
+
+  // Vi du cach su dung "Children" Props
+  function promoteItem() {
+    return (
+      <ProductCard
+        baseName="Limited Edition Tee!"
+        baseDescription="Special limited edition neon green shirt with a metallic Code the Dream Logo shinier than the latest front-end framework! Signed by the legendary Frank!"
+      />
+    );
+  }
 
   return (
-    <>
-      <div className="coming-soon">
-        <h1>CTD Swag</h1>
+    <main>
+      <Header />
 
-        <div style={{ height: 100, width: 100 }}>
-          <img src={ctdLogo} alt="Code The Dream Logo" />
-        </div>
-
-        <h2>Coming Soon ...</h2>
-
-        <ul>
-          {testList.map((item) => (
-            <li key={{ item }}>{item}</li>
-          ))}
-        </ul>
-      </div>
-    </>
+      <ProductList inventory={inventory}>{promoteItem()}</ProductList>
+      {/*invoking promoted item between the tags inserts the ItemCard*/}
+    </main>
   );
 }
-
-/* ========================================================= */
-// function declarations
-// function Component1() {
-//   return <p>Component1 uses a function declaration</p>;
-// }
-
-// // function expressions
-// const Component2 = function () {
-//   return <p>Component2 uses a function expression</p>;
-// };
-
-// // arrow functions
-// const Component3 = () => {
-//   return <p>Component3 uses an arrow function</p>;
-// };
-
-// // arrow function with implicit return
-// const Component4 = () => (
-//   <p>Component4 uses an arrow function with implicit return</p>
-// );
-
-// function App() {
-//   return (
-//     <>
-//       <Component1 />
-//       <Component2 />
-//       <Component3 />
-//       <Component4 />
-//     </>
-//   );
-// }
 
 /* ========================================================= */
 export default App;
