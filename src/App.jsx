@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import './App.css';
+import './assets/css-reset.css';
 
 import inventoryData from './assets/inventory.json';
 
@@ -8,60 +9,65 @@ import Header from './Header';
 import ProductList from './ProductList';
 import ProductCard from './ProductCard';
 
-// import ctdLogo from './assets/mono-blue-logo.svg';
-
-// console.log(inventoryData); // this is a object
-
 /* ========================================================= */
 
-// const message = 'Coming Soon...'; //This is outside the function definition for App
-
-// let message = 'Coming Soon...'; //This is outside the function definition for App
-
-// setTimeout(() => {
-//   message = 'We can feel it...';
-
-//   console.log(`Updated message: ${message}`);
-// }, 3000);
-
-/* ========================================================= */
-// function App() {
-//   // const title = ' CTD Swag'; // This is inside the Component before the return
-
-//   return (
-//     <div className="coming-soon">
-//       <h1>{title}</h1>
-//       <div style={{ height: 100, width: 100 }}>
-//         <img src={ctdLogo} alt="Code The Dream Logo" />
-//       </div>
-//       <h2>{message}</h2>
-//     </div>
-//   );
-// }
-
-/* ========================================================= */
 function App() {
-  const [inventory, setInventory] = useState(inventoryData.inventory);
+  const [inventory, setInventory] = useState([]);
 
-  // Vi du cach su dung "Children" Props
-  function promoteItem() {
-    return (
-      <ProductCard
-        baseName="Limited Edition Tee!"
-        baseDescription="Special limited edition neon green shirt with a metallic Code the Dream Logo shinier than the latest front-end framework! Signed by the legendary Frank!"
-      />
-    );
+  const [cart, setCart] = useState([]);
+
+  useEffect(() => {
+    setInventory([...inventoryData.inventory]);
+  }, []);
+
+  function handleAddItemToCart(id) {
+    const target = inventory.find((item) => item.id === id);
+
+    //if no inventory items are found
+    //we want to prevent the app from crashing
+    //by exiting this function now
+    if (!target) {
+      console.error('cart error: item not found');
+      return;
+    }
+
+    //create an new object, spread the contents of the item selected
+    //and add a `cartItemId`
+    // cùng 1 item nhưng khác thời điểm add
+    const cartItem = { ...target, cartItemId: Date.now() };
+
+    console.log('cartItem = ', cartItem);
+
+    setCart([...cart, cartItem]);
+
+    // console.log('cart', cart); // tại sao lại log ra kết quả loop trước
+  }
+
+  function handleRemoveItemFromCart(id) {
+    const updatedCart = cart.filter((item) => item.id !== id);
+
+    setCart([...updatedCart]);
   }
 
   return (
-    <main>
-      <Header />
+    <>
+      <Header cart={cart} />
 
-      <ProductList inventory={inventory}>{promoteItem()}</ProductList>
-      {/*invoking promoted item between the tags inserts the ItemCard*/}
-    </main>
+      <main>
+        <ProductList
+          inventory={inventory}
+          handleAddItemToCart={handleAddItemToCart}
+        ></ProductList>
+      </main>
+
+      <footer>
+        <p>
+          Made with ❤️ | &copy;
+          <a href="https://codethedream.org/">CTD </a>
+        </p>
+      </footer>
+    </>
   );
 }
-
 /* ========================================================= */
 export default App;
