@@ -1,10 +1,21 @@
+import placeholder from './assets/placeholder.png';
+
+/* ========================================================= */
 /*ProductCard.jsx*/
-function ProductCard({ baseName, baseDescription }) {
+function ProductCard({ id, name, description, handleAddItemToCart }) {
   return (
-    <li>
-      <div className="itemCard">
-        <h2>{baseName}</h2>
-        <p>{baseDescription}</p>
+    <li className="productCard">
+      <div className="productPreview">
+        <img src={placeholder} alt="" />
+      </div>
+
+      <div className="productCopy">
+        <h2>{name}</h2>
+        <p>{description}</p>
+      </div>
+
+      <div className="productButtons">
+        <button onClick={() => handleAddItemToCart(id)}>Add to Cart</button>
       </div>
     </li>
   );
