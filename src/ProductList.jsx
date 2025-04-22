@@ -37,7 +37,7 @@ function ProductList({ inventory, handleAddItemToCart }) {
       }
     });
 
-    console.log('workingProducts', workingProducts);
+    console.log('workingProducts = ', workingProducts);
 
     setProducts([...workingProducts]);
   }, [inventory]);
