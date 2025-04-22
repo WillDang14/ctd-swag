@@ -9,6 +9,7 @@ import Header from './Header';
 import ProductList from './ProductList';
 import ProductCard from './ProductCard';
 
+import Cart from './Cart';
 /* ========================================================= */
 
 function App() {
@@ -16,31 +17,54 @@ function App() {
 
   const [cart, setCart] = useState([]);
 
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
   useEffect(() => {
     setInventory([...inventoryData.inventory]);
   }, []);
 
   function handleAddItemToCart(id) {
-    const target = inventory.find((item) => item.id === id);
+    // const target = inventory.find((item) => item.id === id);
 
-    //if no inventory items are found
-    //we want to prevent the app from crashing
-    //by exiting this function now
-    if (!target) {
+    // if (!target) {
+    //   console.error('cart error: item not found');
+    //   return;
+    // }
+
+    // const cartItem = { ...target, cartItemId: Date.now() };
+
+    // console.log('cartItem = ', cartItem);
+
+    // setCart([...cart, cartItem]);
+
+    // week 5
+    const inventoryItem = inventory.find((item) => item.id === id);
+
+    if (!inventoryItem) {
       console.error('cart error: item not found');
+
       return;
     }
 
-    //create an new object, spread the contents of the item selected
-    //and add a `cartItemId`
-    // cùng 1 item nhưng khác thời điểm add
-    const cartItem = { ...target, cartItemId: Date.now() };
+    // tìm trong cart xem có item đang add vô có trong cart chưa
+    const itemToUpdate = cart.find((item) => item.id === id);
 
-    console.log('cartItem = ', cartItem);
+    let updatedCartItem;
 
-    setCart([...cart, cartItem]);
+    // nếu tìm thấy trong cart có item đó rồi thì add thêm thông tin số lượng vào
+    // nếu không tìm thấy trong cart item đó thì đương nhiên là số lượng = 1
+    if (itemToUpdate) {
+      updatedCartItem = {
+        ...itemToUpdate,
+        itemCount: itemToUpdate.itemCount + 1,
+      };
+    } else {
+      updatedCartItem = { ...inventoryItem, itemCount: 1 };
+    }
 
-    // console.log('cart', cart); // tại sao lại log ra kết quả loop trước
+    // update cart state với filter lại cart
+    // filter những item không trùng id, còn item có id trùng thì xếp cuối
+    setCart([...cart.filter((item) => item.id !== id), updatedCartItem]);
   }
 
   function handleRemoveItemFromCart(id) {
@@ -49,15 +73,32 @@ function App() {
     setCart([...updatedCart]);
   }
 
+  function handleCloseCart() {
+    //prevents re-render if unchanged
+    if (isCartOpen) {
+      setIsCartOpen(false);
+    }
+  }
+
+  function handleOpenCart() {
+    //prevents re-render if unchanged
+    if (!isCartOpen) {
+      setIsCartOpen(true);
+    }
+  }
+
   return (
     <>
-      <Header cart={cart} />
+      <Header cart={cart} handleOpenCart={handleOpenCart} />
 
       <main>
         <ProductList
           inventory={inventory}
           handleAddItemToCart={handleAddItemToCart}
         ></ProductList>
+
+        {/*`isCartOpen has to be true for the cart to be rendered*/}
+        {isCartOpen && <Cart cart={cart} handleCloseCart={handleCloseCart} />}
       </main>
 
       <footer>
