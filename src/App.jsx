@@ -23,6 +23,11 @@ function App() {
     setInventory([...inventoryData.inventory]);
   }, []);
 
+  // tu them vao de check cart state
+  // useEffect(() => {
+  //   console.log('cart = ', cart);
+  // }, [cart]);
+
   function handleAddItemToCart(id) {
     // const target = inventory.find((item) => item.id === id);
 
@@ -62,9 +67,13 @@ function App() {
       updatedCartItem = { ...inventoryItem, itemCount: 1 };
     }
 
+    //
+
     // update cart state với filter lại cart
     // filter những item không trùng id, còn item có id trùng thì xếp cuối
     setCart([...cart.filter((item) => item.id !== id), updatedCartItem]);
+
+    //
   }
 
   function handleRemoveItemFromCart(id) {
@@ -98,7 +107,15 @@ function App() {
         ></ProductList>
 
         {/*`isCartOpen has to be true for the cart to be rendered*/}
-        {isCartOpen && <Cart cart={cart} handleCloseCart={handleCloseCart} />}
+        {/* {isCartOpen && <Cart cart={cart} handleCloseCart={handleCloseCart} />} */}
+
+        {isCartOpen && (
+          <Cart
+            cart={cart}
+            setCart={setCart} // only change
+            handleCloseCart={handleCloseCart}
+          />
+        )}
       </main>
 
       <footer>
