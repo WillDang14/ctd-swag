@@ -9,7 +9,10 @@ import Header from './Header';
 import ProductList from './ProductList';
 import ProductCard from './ProductCard';
 
-import Cart from './Cart';
+// import Cart from './Cart';
+import Cart from './features/Cart/Cart';
+
+import Footer from './layout/Footer';
 /* ========================================================= */
 
 function App() {
@@ -23,26 +26,7 @@ function App() {
     setInventory([...inventoryData.inventory]);
   }, []);
 
-  // tu them vao de check cart state
-  // useEffect(() => {
-  //   console.log('cart = ', cart);
-  // }, [cart]);
-
   function handleAddItemToCart(id) {
-    // const target = inventory.find((item) => item.id === id);
-
-    // if (!target) {
-    //   console.error('cart error: item not found');
-    //   return;
-    // }
-
-    // const cartItem = { ...target, cartItemId: Date.now() };
-
-    // console.log('cartItem = ', cartItem);
-
-    // setCart([...cart, cartItem]);
-
-    // week 5
     const inventoryItem = inventory.find((item) => item.id === id);
 
     if (!inventoryItem) {
@@ -51,13 +35,10 @@ function App() {
       return;
     }
 
-    // tìm trong cart xem có item đang add vô có trong cart chưa
     const itemToUpdate = cart.find((item) => item.id === id);
 
     let updatedCartItem;
 
-    // nếu tìm thấy trong cart có item đó rồi thì add thêm thông tin số lượng vào
-    // nếu không tìm thấy trong cart item đó thì đương nhiên là số lượng = 1
     if (itemToUpdate) {
       updatedCartItem = {
         ...itemToUpdate,
@@ -67,10 +48,6 @@ function App() {
       updatedCartItem = { ...inventoryItem, itemCount: 1 };
     }
 
-    //
-
-    // update cart state với filter lại cart
-    // filter những item không trùng id, còn item có id trùng thì xếp cuối
     setCart([...cart.filter((item) => item.id !== id), updatedCartItem]);
 
     //
@@ -106,24 +83,16 @@ function App() {
           handleAddItemToCart={handleAddItemToCart}
         ></ProductList>
 
-        {/*`isCartOpen has to be true for the cart to be rendered*/}
-        {/* {isCartOpen && <Cart cart={cart} handleCloseCart={handleCloseCart} />} */}
-
         {isCartOpen && (
           <Cart
             cart={cart}
-            setCart={setCart} // only change
+            setCart={setCart}
             handleCloseCart={handleCloseCart}
           />
         )}
       </main>
 
-      <footer>
-        <p>
-          Made with ❤️ | &copy;
-          <a href="https://codethedream.org/">CTD </a>
-        </p>
-      </footer>
+      <Footer />
     </>
   );
 }
